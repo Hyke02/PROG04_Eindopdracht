@@ -18,13 +18,28 @@ export class UI extends ScreenElement {
 
 
     onInitialize(engine) {
-        let barbackground = new Actor({ x: 20, y: 680, color: Color.fromRGB(0, 0, 0, 0.4), width: 200, height: 20, anchor: Vector.Zero })
-        this.addChild(barbackground)
+        // Player 1 HP bar
+        let barbackgroundP1 = new Actor({ x: 20, y: 680, color: Color.fromRGB(0, 0, 0, 0.4), width: 200, height: 20, anchor: Vector.Zero })
+        this.addChild(barbackgroundP1)
 
-        this.healthbar = new Actor({ x: 20, y: 680, color: Color.fromRGB(146, 179, 95), width: 190, height: 10, anchor: new Vector(-.025, -.5) })
-        this.healthbar.z = 10
-        this.addChild(this.healthbar)
+        this.healthbarP1 = new Actor({ x: 20, y: 680, color: Color.fromRGB(146, 179, 95), width: 190, height: 10, anchor: new Vector(-.025, -.5) })
+        this.healthbarP1.z = 10
+        this.addChild(this.healthbarP1)
         
+        this.shipIcon = Resources.ShipIcon
+        this.enemyIcon = new Actor({ x: 70, y: 114, scale: new Vector(2, 2), z: 10})
+        this.enemyIcon.graphics.use(this.shipIcon.toSprite())
+        this.addChild(this.enemyIcon)
+
+        // Player 2 HP bar
+        let barbackgroundP2 = new Actor({ x: 1050, y: 680, color: Color.fromRGB(0, 0, 0, 0.4), width: 200, height: 20, anchor: Vector.Zero })
+        this.addChild(barbackgroundP2)
+
+        this.healthbarP2 = new Actor({ x: 1050, y: 680, color: Color.fromRGB(146, 179, 95), width: 190, height: 10, anchor: new Vector(-.025, -.5) })
+        this.healthbarP2.z = 10
+        this.addChild(this.healthbarP2)
+        
+        // Ships remaining icon
         this.shipIcon = Resources.ShipIcon
         this.enemyIcon = new Actor({ x: 70, y: 114, scale: new Vector(2, 2), z: 10})
         this.enemyIcon.graphics.use(this.shipIcon.toSprite())
@@ -65,13 +80,25 @@ export class UI extends ScreenElement {
         this.mylabel.text = `WAVE: ${this.waveManager.currentWave}`
     }
 
-    reduceHealth(playerHP, playerMaxHP) {
-        this.healthbar.scale = new Vector(playerHP / playerMaxHP, 1)
-        if (playerHP / playerMaxHP < .6) {
-            this.healthbar.color = Color.fromRGB(252, 141, 61)
-        } if (playerHP / playerMaxHP < .3) {
-            this.healthbar.color = Color.fromRGB(252, 61, 61)
+    reduceHealth(player, playerHP, playerMaxHP) {
+        let healthbar
+        if (player === 1) {
+            healthbar = this.healthbarP1
+            console.log('i player 1');
+        } else if (player === 2) {
+            healthbar = this.healthbarP2
+            console.log('i player 2');
         }
+
+        if (healthbar) {
+            healthbar.scale = new Vector(playerHP / playerMaxHP, 1)
+            if (playerHP / playerMaxHP < .6) {
+                healthbar.color = Color.fromRGB(252, 141, 61)
+            } if (playerHP / playerMaxHP < .3) {
+                healthbar.color = Color.fromRGB(252, 61, 61)
+            }
+        }
+            
     }
 
 }

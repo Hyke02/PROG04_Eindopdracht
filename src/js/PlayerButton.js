@@ -14,11 +14,13 @@ export class MenuButton extends Actor {
         buttonOne.graphics.use(buttonOneSprite)
 
         buttonOne.on('pointerenter', () => {
+            document.body.style.cursor = 'pointer'
             buttonOneSprite.tint = new Color(255, 255, 255)
             buttonOne.actions.clearActions()
             buttonOne.actions.easeTo(new Vector(900, 300), 400, EasingFunctions.EaseInOutCubic)
         })
         buttonOne.on('pointerleave', () => {
+            document.body.style.cursor = 'default'
             buttonOneSprite.tint = new Color(200, 200, 200)
             buttonOne.actions.clearActions()
             buttonOne.actions.easeTo(new Vector(1100, 300), 200, EasingFunctions.EaseInOutCubic)
@@ -38,17 +40,19 @@ export class MenuButton extends Actor {
         buttonTwo.graphics.use(buttonTwoSprite)
         
         buttonTwo.on('pointerenter', () => {
+            document.body.style.cursor = 'pointer'
             buttonTwoSprite.tint = new Color(255, 255, 255)
             buttonTwo.actions.clearActions()
             buttonTwo.actions.easeTo(new Vector(900, 500), 400, EasingFunctions.EaseInOutCubic)
         })
         buttonTwo.on('pointerleave', () => {
+            document.body.style.cursor = 'default'
             buttonTwoSprite.tint = new Color(200, 200, 200)
             buttonTwo.actions.clearActions()
             buttonTwo.actions.easeTo(new Vector(1100, 500), 200, EasingFunctions.EaseInOutCubic)
         })
         buttonTwo.on('pointerdown', () => {
-            engine.goToScene('level1')
+            engine.goToScene('Tutorial2')
         })
         this.addChild(buttonTwo)
     }

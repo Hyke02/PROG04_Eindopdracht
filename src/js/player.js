@@ -9,7 +9,7 @@ import { ProjectileAnims } from "./Animations/projectileanim.js";
 
 export class Player extends Actor {
 
-    constructor(x, y, playerHP, playerMaxHP) {
+    constructor(x, y, playerHP, playerMaxHP, controls, whichPlayer) {
 
         super({
 
@@ -30,7 +30,9 @@ export class Player extends Actor {
         this.lastFired = 0
         this.timeBetweenBullets = 800
 
-        this.playerInput = true
+        this.playerInput = true;
+        this.controls = controls;
+        this.whichPlayer = whichPlayer
 
     }
 
@@ -38,7 +40,7 @@ export class Player extends Actor {
 
         if (!this.isImmune) {
             this.hp -= amount
-            this.ui.reduceHealth(this.hp, this.maxHP)
+            this.ui.reduceHealth(this.whichPlayer, this.hp, this.maxHP)
             this.isImmune = true
 
         } if (this.hp > 0) {
@@ -50,8 +52,9 @@ export class Player extends Actor {
             this.vel = new Vector(0, 0)
             this.playerInput = false
             this.graphics.use(playerAnim.playerExplodeAnim)
-            playerAnim.playerExplodeAnim.events.on('end', (a) => {
-                this.scene?.engine.goToScene('GameOver')
+            playerAnim.playerExplodeAnim.events.on('end', () => {
+                // this.scene?.engine.goToScene('GameOver')
+                this.kill()
             })
         }
 
@@ -84,22 +87,22 @@ export class Player extends Actor {
         if (!this.playerInput) return
 
         // movement
-        if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
+        if (engine.input.keyboard.isHeld(this.controls.up)) {
             yspeed = -300
         }
 
-        if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
+        if (engine.input.keyboard.isHeld(this.controls.down)) {
             yspeed = 300,
                 this.graphics.use(playerAnim.brakeAnim)
         }
 
-        if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
+        if (engine.input.keyboard.isHeld(this.controls.right)) {
             xspeed = 300,
                 this.graphics.use(playerAnim.rightAnim),
                 this.anchor.setTo(.63, .42)
         }
 
-        if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
+        if (engine.input.keyboard.isHeld(this.controls.left)) {
             xspeed = -300,
                 this.graphics.use(playerAnim.leftAnim),
                 this.anchor.setTo(.37, .42)
@@ -109,7 +112,7 @@ export class Player extends Actor {
 
         // shooting
         const now = Date.now();
-        if (engine.input.keyboard.isHeld(Keys.Space) && now - this.lastFired > this.timeBetweenBullets) {
+        if (engine.input.keyboard.isHeld(this.controls.shoot) && now - this.lastFired > this.timeBetweenBullets) {
             const bullet = new Projectile(
                 // position v
                 this.pos.x, this.pos.y - 50,

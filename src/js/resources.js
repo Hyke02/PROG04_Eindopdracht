@@ -1,4 +1,5 @@
 import { ImageSource, Sound, Resource, Loader, ImageWrapping, FontSource } from 'excalibur'
+import { Tutorial } from './TutorialActor'
 
 // voeg hier jouw eigen resources toe
 const Resources = {
@@ -19,8 +20,10 @@ const Resources = {
     OnePlayerButton: new ImageSource('images/1Player.png'),
     TwoPlayerButton: new ImageSource('images/2Player.png'),
     Tutorial: new ImageSource('images/tutorial.png'),
+    Tutorial2Player: new ImageSource('images/tutorial2.png'),
     PlusJakartaSans: new FontSource('fonts/PlusJakartaSans-Variable.ttf', 'PlusJakarta'),
-    GameOver: new ImageSource('images/gameover.png')
+    GameOver: new ImageSource('images/gameover.png'),
+    RestartButton: new ImageSource('images/RestartButton.png')
 }
 
 

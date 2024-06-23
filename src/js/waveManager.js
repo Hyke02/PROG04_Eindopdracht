@@ -3,16 +3,17 @@ import { Enemy } from "./enemy";
 import { UI } from "./UI";
 
 export class WaveManager extends Actor {
-
-    currentWave = 1
-    enemiesKilled = 0
-    enemiesToKill = 3
-    enemiesPerWave = 3
-    enemyPositions = []
+    constructor() {
+        super()
+        this.currentWave = 1
+        this.enemiesKilled = 0
+        this.enemiesToKill = 3
+        this.enemiesPerWave = 3
+        this.enemyPositions = []
+    }
 
     enemyKilled(engine) {
         this.enemiesKilled++
-        console.log(`awawa ${this.enemiesKilled}`);
         if (this.enemiesKilled >= this.enemiesToKill) {
             this.nextWave(engine)
         }
@@ -22,6 +23,7 @@ export class WaveManager extends Actor {
         console.log("next wave");
         this.currentWave ++
         engine.currentWave = this.currentWave
+        console.log(engine.currentWave);
         this.enemiesKilled = 0
         this.enemiesToKill += this.enemiesPerWave
         this.enemyPositions = []

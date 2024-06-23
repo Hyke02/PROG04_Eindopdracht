@@ -5,7 +5,7 @@ import { Clouds } from "../ScrollingClouds";
 import { Player } from "../player";
 import { WaveManager } from "../waveManager";
 
-export class Level1 extends Scene {
+export class Level2 extends Scene {
 
     constructor() {
         super()
@@ -14,8 +14,7 @@ export class Level1 extends Scene {
         this.waveManager = null
     }
 
-    onActivate() {
-        const engine = this.engine
+    onInitialize(engine) {
 
         const player1Controls = {
             up: Keys.W,
@@ -25,26 +24,40 @@ export class Level1 extends Scene {
             shoot: Keys.Space
         }
 
-        this.waveManager = new WaveManager()
-        this.waveManager.spawnEnemies(this.waveManager.enemiesToKill, engine)
+        const player2Controls = {
+            up: Keys.Up,
+            down: Keys.Down,
+            left: Keys.Left,
+            right: Keys.Right,
+            shoot: Keys.Num0
+        }
+        
+        const waveManager = new WaveManager()
+        engine.currentWave = waveManager.currentWave
+        waveManager.spawnEnemies(waveManager.enemiesToKill, engine)
 
-        const ui = new UI(this.waveManager)
+        const ui = new UI(waveManager)
         ui.z = 100
         this.add(ui)
 
         const background = new Background()
         this.add(background)
 
-        const player1 = new Player(640, 600, 3, 3, player1Controls, 1)
+        const player1 = new Player(320, 600, 3, 3, player1Controls, 1)
         player1.ui = ui
         this.add(player1)
         this.players.push(player1)
+
+        const player2 = new Player(960, 600, 3, 3, player2Controls, 2)
+        player2.ui = ui
+        this.add(player2)
+        this.players.push(player2)
 
         const clouds = new Clouds()
         clouds.z = 3
         this.add(clouds)
 
-        console.log(this.actors);
+        console.log(this.players);
     }
 
     onDeactivate() {
@@ -67,9 +80,9 @@ export class Level1 extends Scene {
     }
 
     checkGameOver() {
-        if (this.players.every(player => player.hp <= 0) && !this.gameOver) {
+        if (this.players.every(player => player.hp <= 0) && this.gameOver == false) {
             this.gameOver = true
-            this.engine.goToScene('GameOver')
+            this.engine.goToScene('GameOver');
         }
     }
 
